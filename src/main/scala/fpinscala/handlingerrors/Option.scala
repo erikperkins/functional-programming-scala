@@ -32,6 +32,11 @@ object Option {
     else Some(xs.sum / xs.length)
   }
 
+  def Try[A](a: => A): Option[A] = {
+    try Some(a)
+    catch { case e: Exception => None }
+  }
+
   /** Exercise 4.2 */
   def variance(xs: Seq[Double]): Option[Double] =
     mean(xs).map(m => xs.map(x => math.pow(m - x, 2))).flatMap(vs => mean(vs))
