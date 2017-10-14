@@ -93,11 +93,23 @@ class ListTest extends FunSuite {
     assert(List.length(Nil) == 0)
   }
 
+  /** Exercise 3.10 */
+  test("foldLeft") {
+    val list = List(1,2,3)
+    assert(List.foldLeft(Nil: List[Int], list)((b, a) => Cons(a, b)) == List(3,2,1))
+  }
+
   /** Exercise 3.12 */
   test("reverse reverses") {
     val list = List(1, 2, 3, 4)
 
     assert(List.reverse(list) == List(4, 3, 2, 1))
+  }
+
+  /** Exercise 3.13 */
+  test("foldRight") {
+    val list = List(1,2,3)
+    assert(List.foldRight(Nil: List[Int], list)(Cons(_,_)) == List(1,2,3))
   }
 
   /** Exercise 3.15 */
