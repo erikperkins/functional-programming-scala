@@ -121,19 +121,23 @@ object List {
   }
 
   /** Exercise 3.24 */
-
-
+  // Deferred
 
   /** Exercise 3.10 */
   @annotation.tailrec
-  private def foldLeft[A,B](b: B, l: List[A])(f: (B, A) => B): B = l match {
+  def foldLeft[A,B](b: B, l: List[A])(f: (B, A) => B): B = l match {
     case Cons(h, t) => foldLeft(f(b, h), t)(f)
     case Nil => b
   }
 
   /** Exercise 3.13 */
-  private def foldRight[A,B](l: List[A], b: B)(f: (A, B) => B): B =
-    foldLeft(b, reverse(l))((b, a) => f(a, b))
+  def foldRight[A,B](l: List[A], b: B)(f: (A, B) => B): B =
+    foldLeft((z: B) => z, l)((c: B => B, a: A) => compose(curry(f)(a), c))(b)
+    //foldLeft(b, reverse(l))((b, a) => f(a, b))
+
+  private def partial1[A, B, C](a: A, f: (A, B) => C): B => C = (b: B) => f(a, b)
+  private def curry[A, B, C](f: (A, B) => C): A => (B => C) = (a: A) => partial1(a, f)
+  private def compose[A, B, C](f: A => B, g: B => C): A => C = (a: A) => g(f(a))
 
   /** Listing 3.2 */
   private def foldR[A,B](l: List[A], b: B)(f: (A, B) => B): B = l match {
